@@ -62,11 +62,11 @@ class calculadora2:
         
     def multi(self):
         multi= self.num1 * self.num2
-        print('La diferencia es igual a: ',multi)
+        print('La multiplicación es igual a: ',multi)
         
     def div(self):
         div= self.num1 / self.num2
-        print('La diferencia es igual a: ',div)
+        print('La división es igual a: ',div)
 
 calculadora2=calculadora2(num1,num2)
 calculadora2.suma()
