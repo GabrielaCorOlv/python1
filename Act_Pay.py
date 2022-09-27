@@ -40,3 +40,7 @@ display(maxAños)
 # COMMAND ----------
 
 pay = maxAños['NOC'].value_counts().head(15).plot(kind = 'pie')
+
+# COMMAND ----------
+
+#pay = maxAños['NOC'].value_counts().head(15).plot.pie(figsize=(10,10), labels=cantidad, autopct="%0.1f")
