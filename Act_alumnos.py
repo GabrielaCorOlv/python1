@@ -37,6 +37,11 @@ alumnos['gender'].value_counts().sort_values(ascending = True).plot(kind="pie")
 
 # COMMAND ----------
 
+keys = alumnos["gender"].value_counts().keys()
+pie = alumnos["gender"].value_counts().plot.pie(figsize=(10,10), labels= keys, autopct="%0.2f %%")
+
+# COMMAND ----------
+
 #Observar grades
 alumnos["grade"].value_counts().sort_values(ascending=True)
 
