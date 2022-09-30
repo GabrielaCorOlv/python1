@@ -10,6 +10,7 @@
 # COMMAND ----------
 
 import pandas as pd
+import numpy as np
 
 path = '/dbfs/mnt/dpo/AI_Factory/MonterreyDigitalHub/Modulo 17 - Alumnos por grado/clean_students_complete.csv'
 alumnos = pd.read_csv(path)
@@ -17,32 +18,58 @@ alumnos = pd.read_csv(path)
 
 # COMMAND ----------
 
-alumnos = alumnos.drop(labels=['Unnamed: 0', 'Student ID'], axis=1)
-display(alumnos)
+# Elimino los id y math score ya que solo se analizará reading
+alumnos1 = alumnos.drop(labels=['Unnamed: 0', 'Student ID', 'math_score'], axis=1)
+display(alumnos1)
 
 # COMMAND ----------
 
+# Saber como se comparará
+alumnos1['school_name'].unique()
 
+# COMMAND ----------
+
+keys = alumnos1["gender"].value_counts().keys()
+pie = alumnos1["gender"].value_counts().plot.pie(figsize=(5,5), labels= keys, autopct="%0.2f %%")
+
+# COMMAND ----------
+
+# Obtener sueldo min con info
+Max = alumnos1.loc[alumnos1["reading_score"] == alumnos1["reading_score"].max()]
+Max = Max.head(10)
+Max
+
+# COMMAND ----------
+
+keys = Max["gender"].value_counts().keys()
+pie = Max["gender"].value_counts().plot.pie(figsize=(5,5), labels= keys, autopct="%0.2f %%")
+
+# COMMAND ----------
+
+# Obtener sueldo min con info
+Min = alumnos1.loc[alumnos1["reading_score"] == alumnos1["reading_score"].min()]
+Min = Min.head(10)
+Min
+
+# COMMAND ----------
+
+keys = Min["gender"].value_counts().keys()
+pie = Min["gender"].value_counts().plot.pie(figsize=(5,5), labels= keys, autopct="%0.2f %%")
 
 # COMMAND ----------
 
 # MAGIC %md #Act: puntaje reading 2
+# MAGIC Crea / Presenta la forma que creas más conveniente para describir qué grado por escuela tuvo el mejor puntaje en "reading" y con ello saber que genero es el que predomina en este filtro.
 
 # COMMAND ----------
-
-#Crea / Presenta la forma que creas más conveniente para describir qué grado por escuela tuvo el mejor puntaje en "reading" y con ello saber que genero es el que predomina en este filtro.
 
 #Seleccionar columnas
-df_EscuelaPuntajeReading = df_alumnos[['school_name','grade','reading_score', 'gender']]
+alumnosmax = alumnos1[alumnos1['reading_score'] == alumnos1['reading_score'].max()] #subdf mayor calif
+value = pd.DataFrame(alumnosmax[['school_name', 'grade', 'reading_score' ,'gender']].value_counts().sort_values(ascending = True).head(10))
 
-df_EscuelaPuntajeReading_max = df_EscuelaPuntajeReading[df_EscuelaPuntajeReading['reading_score'] == df_EscuelaPuntajeReading['reading_score'].max()] #subdf mayor calif
-
-print('Mix Género vs. MAX reading_score por grado:')
-print(df_EscuelaPuntajeReading_max[['school_name', 'grade', 'reading_score' ,'gender']].value_counts().sort_values(ascending = True).head(10))
-
+print('Info school, grade, reading, gender')
+print(alumnosmax[['school_name', 'grade', 'reading_score' ,'gender']].value_counts().sort_values(ascending = True).head(10))
 
 # COMMAND ----------
 
-#Crea / Presenta un algoritmo que genere los datos de "reading_score" y "math_score", en variables categóricas, y guárdalo en dos columnas diferentes (cada columna nueva representa la nueva columna con variables categórica). 
 
-#Crea / Presenta una gráfica que condense la información obtenida ahora categóricamente mostrando que género obtuvo mejor puntaje.
